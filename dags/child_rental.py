@@ -27,8 +27,8 @@ with DAG(
         task_id='start_pipeline',
     )
 
-    transform-load_to_hive = BashOperator(
-        task_id='transform-load_to_hive',
+    load_to_hive = BashOperator(
+        task_id='load_to_hive',
         bash_command="""
             ssh hadoop@172.17.0.2 /home/hadoop/spark/bin/spark-submit \
             --files /home/hadoop/hive/conf/hive-site.xml \
@@ -43,4 +43,4 @@ with DAG(
 # ===============================================
 #              TASK DEPENDENCIES
 # ===============================================
-start_pipeline >> transform-load_to_hive >> end_pipeline
+start_pipeline >> load_to_hive >> end_pipeline
