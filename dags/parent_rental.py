@@ -30,7 +30,7 @@ with DAG(
 
     ingest_to_hdfs = BashOperator(
         task_id='ingest_to_hdfs',
-        bash_command="bash -c '/home/hadoop/scripts/rental.sh'",
+        bash_command="bash -c '/home/hadoop/scripts/ingest-rental.sh'",
     )
 
     trigger_child_transform = TriggerDagRunOperator(
