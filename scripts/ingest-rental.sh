@@ -4,7 +4,7 @@ export HADOOP_HOME=/home/hadoop/hadoop
 export PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin
 
 # ===============================================
-# 1. VARIABLES DE CONFIGURACION
+# 1. CONFIGURATION VARIABLES
 # ===============================================
 
 FILES=(
@@ -12,65 +12,65 @@ FILES=(
         https://data-engineer-edvai-public.s3.amazonaws.com/georef-united-states-of-america-state.csv,geo_ref.csv
 )
 
-DESTINO_TEMPORAL="/tmp/ingest_rental"
+TEMP_DESTINATION="/tmp/ingest_rental"
 
-DESTINO_HDFS="/home/hadoop/landing/rental"
-
-# ===============================================
-# 2. CONFIGURANDO ENTORNO
-# ===============================================
-
-echo "Limpiando y preparando directorio local: ${DESTINO_TEMPORAL}"
-rm -rf "${DESTINO_TEMPORAL}"
-mkdir -p "${DESTINO_TEMPORAL}"
-echo "Directorio local listo."
-
-echo "Limpiando directorio de destino en HDFS (Eliminando ${DESTINO_HDFS})..."
-hdfs dfs -rm -r -skipTrash "${DESTINO_HDFS}"
-echo "Verificando/Creando directorio de destino en HDFS: ${DESTINO_HDFS}"
-hdfs dfs -mkdir -p "${DESTINO_HDFS}"
-echo "Directorio HDFS (Landing Zone) listo."
+HDFS_DESTINATION="/home/hadoop/landing/rental"
 
 # ===============================================
-# 3. PROCESO DE INGESTA
+# 2. ENVIRONMENT SETUP
+# ===============================================
+
+echo "Cleaning and preparing local directory: ${TEMP_DESTINATION}"
+rm -rf "${TEMP_DESTINATION}"
+mkdir -p "${TEMP_DESTINATION}"
+echo "Local directory ready."
+
+echo "Cleaning destination directory in HDFS (Deleting ${HDFS_DESTINATION})..."
+hdfs dfs -rm -r -skipTrash "${HDFS_DESTINATION}"
+echo "Verifying/Creating destination directory in HDFS: ${HDFS_DESTINATION}"
+hdfs dfs -mkdir -p "${HDFS_DESTINATION}"
+echo "HDFS Landing Zone ready."
+
+# ===============================================
+# 3. INGESTION PROCESS
 # ===============================================
 
 for ENTRY in "${FILES[@]}"; do
     FILE_URL=$(echo "${ENTRY}" | cut -d',' -f1)
     FILE_NAME=$(echo "${ENTRY}" | cut -d',' -f2)
-    LOCAL_FILE="${DESTINO_TEMPORAL}/${FILE_NAME}"
+    LOCAL_FILE="${TEMP_DESTINATION}/${FILE_NAME}"
 
-    echo "--- Procesando archivo: ${FILE_NAME} ---"
+    echo "--- Processing file: ${FILE_NAME} ---"
 
-        echo "1. Descargando desde: ${FILE_URL}..."
+        echo "1. Downloading from: ${FILE_URL}..."
         wget --no-check-certificate -q --timeout=120 "${FILE_URL}" -O "${LOCAL_FILE}"
 
         if [ $? -ne 0 ]; then
-                echo "ERROR: Fallo la descarga de ${FILE_NAME}. Saliendo."
+                echo "ERROR: Failed to download ${FILE_NAME}. Exiting."
                 rm -f "${LOCAL_FILE}"
                 exit 1
         fi
-        echo "   Descarga completada en ${LOCAL_FILE}."
+        echo "Download completed: ${LOCAL_FILE}."
 
-        echo "2. Ingestando ${FILE_NAME} a HDFS en ${DESTINO_HDFS}..."
-        hdfs dfs -put -f "${LOCAL_FILE}" "${DESTINO_HDFS}"
+        echo "2. Ingesting ${FILE_NAME} into HDFS at ${HDFS_DESTINATION}..."
+        hdfs dfs -put -f "${LOCAL_FILE}" "${HDFS_DESTINATION}"
 
-        echo "   Ingesta completada."
+        echo "Ingestion completed."
 
-        echo "3. Limpiando archivo local para liberar espacio..."
+        echo "3. Cleaning up local file to free space..."
         rm "${LOCAL_FILE}"
-        echo "   Limpieza local de ${FILE_NAME} terminada."
+        echo "Local cleanup for ${FILE_NAME} finished"
 done
 
 echo ""
 echo "======================================================="
-echo "EXITO: Ingesta de todos los archivos completada."
-echo "Archivos disponibles en HDFS en: ${DESTINO_HDFS}"
+echo "SUCCESS: Data ingestion for all files completed."
+echo "Files available in HDFS at: ${HDFS_DESTINATION}"
 echo "======================================================="
 
 # ===============================================
-# 4. VERIFICACION FINAL
+# 4. FINAL VERIFICATION
 # ===============================================
 
-echo "---  Verificando archivos finales en HDFS ---"
-hdfs dfs -ls "${DESTINO_HDFS}"
+echo "--- Verifying final files in HDFS ---"
+hdfs dfs -ls "${HDFS_DESTINATION}"
