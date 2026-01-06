@@ -108,7 +108,7 @@ try:
         col("renterTripsTaken").cast(IntegerType()).alias("renterTripsTaken"),
         col("reviewCount").cast(IntegerType()).alias("reviewCount"),
         col("city").cast("string").alias("city"),
-        col("state_name").cast("string").alias("state_name),
+        col("state_name").cast("string").alias("state_name"),
         col("owner_id").cast(IntegerType()).alias("owner_id"),
         col("rate_daily").cast(IntegerType()).alias("rate_daily"),
         col("make").cast("string").alias("make"),
