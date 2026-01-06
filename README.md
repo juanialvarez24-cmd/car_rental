@@ -8,7 +8,7 @@ The goal of this project is to process car rental data to analyze fleet performa
 ## 🛠 Architecture & Technologies
 The pipeline follows a modern Big Data architecture:
 
-* **Data Ingestion Layer:** Uses **Bash** scripts for automated data retrieval from cloud storage (AWS S3) to **HDFS**, implementing pre-processing validation checks.
+* **Data Ingestion Layer:** Uses **Bash** scripts for automated data retrieval to **HDFS**, implementing pre-processing validation checks.
 * **Transformation Engine:** Leverages **PySpark** for distributed processing, focusing on data quality (handling nulls/empty values) and business-rule filtering, concluding with the automated data load into Apache Hive tables.
 * **Workflow Management:** Orchestrated by **Apache Airflow**, ensuring a resilient and schedulable end-to-end pipeline from raw data to final insights.
 * **Analytical Storage:** Employs **Apache Hive** as the Data Warehouse layer, organizing processed vehicle data into structured tables for efficient SQL reporting.
