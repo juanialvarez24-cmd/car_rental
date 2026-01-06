@@ -43,5 +43,34 @@ The pipeline follows a modern Big Data architecture:
 └── README.md
 ```
 
+## 📊 Business Insights & Visualizations
+The following insights represent the final stage of the pipeline, where raw data is transformed into strategic decision-making tools.
+
+### 1. Total Fleet Activity Analysis
+![Total Cars](reports/total_cars.png)
+* **Strategic Value:** This visualization highlights inventory concentration by brand. It identifies the dominant manufacturers in the fleet, allowing for targeted partnership strategies and inventory optimization.
+
+### 2. Fuel Type Positioning Analysis
+![Fuel Type](reports/fuel_type.png)
+* **Strategic Value:** Analyzes the correlation between customer experience (**Rating**) and profitability (**Price**) segmented by fuel technology. This helps the business understand which engine types offer the best balance of user satisfaction and revenue.
+
+### 3. State Performance Ranking
+![Trips per State](reports/trips_per_state.png)
+* **Strategic Value:** Ranks states by business volume (total trips) while integrating a quality metric (Average Rating). This multi-dimensional view identifies not just where we rent the most, but where we provide the best service.
+
+## 💡 Executive Summary & Strategic Recommendations
+
+### 1. Key Conclusions
+* **Fleet Composition:** The inventory is highly concentrated in two manufacturers: **Tesla and Toyota**. This reflects a dual strategy balancing premium electric technology with high operational reliability.
+* **Market Positioning (Price vs. Quality):**
+    * **Premium Segment (Electric):** These vehicles represent the most profitable asset class, with the highest daily price (≈$140 USD) and peak quality ratings (4.99).
+    * **Volume Segment (Gasoline):** Remains the operational pillar, offering competitive pricing (≈$86 USD) while maintaining excellent service quality (4.98).
+    * **Critical Risk (Unknown Fuel Type):** Data reveals a high-risk gap; these vehicles are priced high but hold the lowest quality ratings in the entire fleet (4.95).
+* **Geographic Performance:** Business volume is heavily concentrated in **California and Florida**, which act as the primary revenue engines for the platform.
+
+### 2. Strategic Recommendations
+* **Data Integrity & Investigation:** Launch an immediate audit of the 'Unknown' fuel category. Identifying these vehicles is crucial to understand why they are underperforming in customer satisfaction despite their high rental price.
+* **Operational Health KPI:** Establish a priority alert system if the **Average Rating** for the Gasoline fleet in key states falls below **4.97**. Given its role as the fleet's foundation, any dip in quality here poses a significant risk to overall business stability.
+
 ---
 *Developed by a Data Engineering Specialist.*
